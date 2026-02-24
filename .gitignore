@@ -1,0 +1,57 @@
+@'
+# ===== Python / Jupyter =====
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+.env
+.env.*
+
+# ===== OS / IDE =====
+.DS_Store
+Thumbs.db
+.vscode/
+
+# ===== Big data / outputs (DO NOT COMMIT) =====
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
+cafaeval_truth_dataset/
+cafa_eval_scoreset/
+cafaeval_scoreset/
+cafa_eval_truth_dataset/
+
+final_result/
+test/
+Train/
+data/
+structure/
+structure_test/
+structures*/
+
+*.tsv
+*.csv
+*.npz
+*.npy
+*.pkl
+*.pt
+*.pth
+*.cif
+'@ | Set-Content -Encoding UTF8 .gitignore
+Add-Content -Encoding UTF8 .gitignore "`n# temp`ncode/tmp/`ncode/tmp/latest/`n"
+# ===== temp / generated =====
+code/tmp/
+code/tmp/latest/
+
+# ===== large/binary docs & images (keep repo light) =====
+# NOTE: .ipynb는 포함할 거라서 제외하지 않음
+*.pdf
+*.docx
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
