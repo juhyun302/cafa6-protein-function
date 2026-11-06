@@ -8,6 +8,8 @@ Microsoft AI School 2차 팀 프로젝트 · **AZ의 마법사**
 
 **팀원 코드:** [서열 모델 실험](models/sequence_baselines/)은 **홍지승 작성·보존용**이며, 이주현의 담당 구현과 구분합니다.
 
+[개인 기여와 문제 해결](docs/contributions.md) · [프로젝트 경과](docs/project-history.md) · [보존된 실행 기록](docs/evidence/README.md)
+
 Kaggle에서 개최된 **CAFA 6 Protein Function Prediction** 대회에 참여하며 진행한 프로젝트입니다. 단백질의 기능을 예측하는 실제 대회 과제를 바탕으로 구조 기반 예측과 앙상블을 구현했습니다.
 
 [Kaggle 공식 대회](https://www.kaggle.com/competitions/cafa-6-protein-function-prediction/overview) · [공식 데이터 설명](https://www.kaggle.com/competitions/cafa-6-protein-function-prediction/data) · [대회 리더보드](https://www.kaggle.com/competitions/cafa-6-protein-function-prediction/leaderboard)
@@ -91,13 +93,23 @@ python scripts/cafa.py validate --input artifacts/demo/submission.tsv
 | 전체 명령과 데모의 실행 순서 | [cli.py](src/cafa_pipeline/cli.py) |
 | 홍지승 작성·보존용 ESM 임베딩·CNN·Attention MIL 실험 | [서열 실험 안내](models/sequence_baselines/README.md) |
 
-## 주요 엔지니어링 작업
+## 제가 구현한 부분과 해결한 문제
 
-- **대규모 구조 검색:** 발표자료 기준 14만 개 이상의 데이터를 32코어 CPU 환경에서 처리했습니다. 현재 검색 명령은 배치 크기·스레드 수를 명시적으로 설정합니다.
-- **재개 가능한 수집:** 받은 구조 파일을 검사해 재사용하고, 구조 없음과 통신 실패를 구분해 기록합니다.
-- **GO 상향 전파:** 자식 기능의 점수를 부모 기능에 max 방식으로 반영합니다.
-- **선별·앙상블:** 상대 점수 필터와 고득점 패치, 전역 순위 평균을 사용합니다.
-- **실행 경로 정리:** 실습 노트북의 중간 처리 단계를 CLI로 통합하고, 동일한 TSV 스키마와 작은 예제 테스트를 추가했습니다.
+| 문제 | 이주현의 담당 구현 |
+| --- | --- |
+| 서열·구조·annotation의 ID 연결 | FASTA ID 추출, 기존 구조 수집·검사·재사용과 ID 정리 |
+| 대규모 구조 검색 결과 처리 | Azure ML에서 Foldseek 배치 검색과 결과 병합 흐름 구성 |
+| 유사 구조를 기능 점수로 바꾸기 | self-hit 제외, annotation 연결, 유사도 가중 GO 전이 |
+| 상위 기능과의 일관성·후보 증가 | max 상향 전파, 정규화와 후보 제한, 제출용 결과 생성 |
+| 구조 예측의 커버리지 보완 | 팀 예측에 고득점 구조 패치를 적용하고 전역 순위 평균으로 결합 |
+
+당시 노트북의 저장된 출력에는 **30개 검색 배치 파일·2,488,745개 hit 행 병합**이 남아 있습니다. 발표에서는 32코어 CPU 처리 전략을 소개했습니다. 이 값은 보존된 기록이며 이번 정리에서 대규모 검색을 재실행한 결과는 아닙니다.
+
+구조 확보와 GO 기능 전이 성공을 구분한 분석, GO 전파 후 후보 제한과 앙상블의 선택 이유는 [개인 기여 상세](docs/contributions.md)에 정리했습니다. 초기 100개 실험의 입력과 일부 수치는 출처가 달라 [프로젝트 경과](docs/project-history.md)에서 분리해 설명합니다.
+
+### 프로젝트 이후 재현성 개선
+
+2026-11-06에 Codex를 활용해 당시 스크립트·노트북을 현재 Python 패키지와 CLI로 정리했습니다. 공통 TSV 형식, 오류 처리 보완, 가상 데모, 회귀 테스트·CI는 이 후속 정리에 포함됩니다. 당시 대회 작업과 현재의 재현성 개선을 구분합니다.
 
 발표 당시의 수치·선택 이유와 현재 구현의 차이는 [실험 기록](docs/experiments.md)에 정리했습니다.
 
@@ -113,6 +125,7 @@ examples/                  작은 가상 입력과 형식 예제
 configs/                   Azure 설정 템플릿
 environments/              구조 처리·서열 실험 환경
 docs/                      실행 순서·용어·실험·정리 이력
+docs/evidence/             과거 출력·ID 목록에서 추린 관찰값
 tests/                     처리 로직과 전체 예제 테스트
 assets/images/             발표에서 선별한 구성·설명 이미지
 data/README.md             실제 데이터 준비 안내
@@ -125,6 +138,8 @@ data/README.md             실제 데이터 준비 안내
 - [구조 기반 방법과 점수의 의미](docs/structure-method.md)
 - [Azure ML 제출](azureml/README.md)
 - [기존 파일이 어디로 갔는지](docs/reorganization.md)
+- [개인 기여와 문제 해결](docs/contributions.md)
+- [프로젝트 경과와 실험 수치의 출처](docs/project-history.md)
 
 원본 데이터·GO 매핑·모델 가중치는 별도로 준비해야 합니다. Foldseek 검색은 설치된 실행 파일과 Linux/WSL 또는 Azure Linux 환경을 사용합니다. 전체 대회 학습·제출 결과는 이 예제 실행만으로 재현되지 않습니다.
 

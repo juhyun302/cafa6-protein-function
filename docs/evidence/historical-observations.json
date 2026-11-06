@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "reviewed_on": "2026-11-06",
+  "source_commit": "f6b2606d54afb9ee1aa54dcfc91f1b9103102cd0",
+  "provenance_note": "Saved historical notebook outputs and recomputed identifier-list counts. Not a rerun of the original ML experiment.",
+  "notebook": {
+    "path": "SeekFold azureml로 돌리기/azure_ml_alphafold_download_submit.ipynb",
+    "blob_sha": "765fb322dcc446157be197cce9b90efd5410d7f3"
+  },
+  "saved_outputs": [
+    {
+      "cell_index_zero_based": 13,
+      "stage": "merge_foldseek_batches",
+      "batch_files": 30,
+      "hit_rows": 2488745
+    },
+    {
+      "cell_index_zero_based": 17,
+      "stage": "query_ids_present_in_search_results",
+      "input_ids": 224309,
+      "query_ids_present": 145521,
+      "query_ids_absent": 78788,
+      "interpretation": "Search-result coverage, not independently verified AlphaFold availability."
+    },
+    {
+      "cell_index_zero_based": 20,
+      "stage": "go_transfer",
+      "query_proteins": 70557,
+      "prediction_rows": 644529
+    },
+    {
+      "cell_index_zero_based": 23,
+      "stage": "normalization_and_namespace_split",
+      "query_proteins": 70557,
+      "namespace_rows": {
+        "MF": 130879,
+        "BP": 313065,
+        "CC": 176985
+      },
+      "total_rows": 620929
+    }
+  ],
+  "separate_markdown_summary": {
+    "cell_index_zero_based": 24,
+    "query_proteins": 127438,
+    "total_rows": 2188445,
+    "same_run_as_saved_outputs_confirmed": false
+  },
+  "identifier_list_checks": {
+    "sources": {
+      "train_accessions": {
+        "path": "code/실습/uniprot_accessions.txt",
+        "blob_sha": "e3e9f5094410dbe11807c82583caec6d422bd1d9"
+      },
+      "early_missing": {
+        "path": "code/실습/test_missing.txt",
+        "blob_sha": "ea563344275c69a9e4dbc742727861dc6c4e5271"
+      },
+      "later_input": {
+        "path": "최종 실습/100_fasta_accessions.txt",
+        "blob_sha": "a3b8a68464a1c79b9274384c60d72e886b7fcfeb"
+      },
+      "later_ok": {
+        "path": "최종 실습/structure_download_ok.txt",
+        "blob_sha": "c331c18968ef6667de2f4951e56d9dc8c4725f69"
+      },
+      "later_missing": {
+        "path": "최종 실습/missing_af_structure.txt",
+        "blob_sha": "1ebc03c5cf94186fb123de8cd668731b65ca7af1"
+      }
+    },
+    "later_input_count": 100,
+    "later_ok_count": 68,
+    "later_missing_count": 32,
+    "later_logs_disjoint": true,
+    "later_logs_partition_input": true,
+    "early_missing_count": 28,
+    "early_missing_subset_of_train_first100": true,
+    "train_first100_and_later_input_overlap": 11,
+    "early_missing_and_later_input_overlap": 4
+  },
+  "excluded_claims": [
+    "Full experiment replay",
+    "Measured runtime or cost reduction",
+    "Calibrated confidence at 0.99",
+    "Independent structure-branch leaderboard improvement"
+  ]
+}
