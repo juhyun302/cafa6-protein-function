@@ -1,70 +1,119 @@
-<!-- ============================================================
-     CAFA-6 Protein Function Prediction (2nd Project)
-     Focus: AlphaFold 3D + Foldseek structural transfer + Ensemble
-     ============================================================ -->
+# CAFA-6 | 단백질의 기능을 예측하는 머신러닝 프로젝트
 
-<h1 align="center">CAFA-6 단백질 기능 예측 모델 (2차 프로젝트)</h1>
+> 단백질의 서열과 3D 구조 정보를 이용해 **이 단백질이 어떤 일을 하는지** 예측하고, CAFA-6 대회 제출용 파일을 만드는 프로젝트입니다.
 
-<p align="center">
-  <b>AlphaFold 3D 구조 기반 예측(Foldseek) + 멀티모달 앙상블로 GO term 기능 예측 성능 최적화</b>
-</p>
+Microsoft AI School 2차 팀 프로젝트 · **AZ의 마법사**
 
-<p align="center">
-  <!-- 필요하면 배지 추가 -->
-  <!-- <img src="https://img.shields.io/badge/Python-3.10%2B-blue?style=flat-square" />
-  <img src="https://img.shields.io/badge/Task-GO%20Term%20Prediction-orange?style=flat-square" />
-  <img src="https://img.shields.io/badge/Method-AlphaFold%20%2B%20Foldseek%20%2B%20Ensemble-green?style=flat-square" /> -->
-</p>
+## 어떤 문제를 해결하나요?
 
----
+단백질 서열은 아미노산이 나열된 긴 문자열입니다. 서열만 보고 단백질이 하는 일을 알아내기는 어렵습니다. 이 프로젝트는 **이미 기능이 알려진 단백질과의 유사성**과 **서열 모델의 예측**을 함께 활용합니다.
 
-## 📌 프로젝트 개요
+결과는 GO(Gene Ontology)라는 기능 분류 체계의 번호와 점수로 표현합니다.
 
-본 프로젝트는 **CAFA-6 단백질 기능 예측 과제**를 대상으로,  
-단백질의 **3D 구조 정보(AlphaFold)** 를 활용해 **구조 유사도 기반 기능 전이(transfer)** 로 GO term 점수를 산출하고,  
-팀 내 다른 모델(서열/텍스트/네트워크 등)과 **앙상블(ensemble)** 하여 최종 예측 성능을 극대화하는 모델을 개발합니다.
+| 입력 | 처리 | 출력 |
+| --- | --- | --- |
+| 단백질 ID·아미노산 서열(FASTA) | 구조 조회·유사 구조 검색·기능 정보 전이·앙상블 | 단백질 ID, GO 기능 번호, 예측 점수(TSV) |
 
----
+아래는 형식 설명을 위한 가상 결과입니다. 점수는 모델 간 비교·정렬을 위한 값이며, 실제 정답 확률을 보장하지 않습니다.
 
-## 🎯 목표
+~~~text
+DEMO_Q1    GO:9000001    0.85
+DEMO_Q2    GO:9200001    0.72
+~~~
 
-- AlphaFold로 확보한 **3D 구조**를 기반으로 단백질 기능을 예측
-- Foldseek를 이용한 **구조 유사도 검색 + GO term 전이** 파이프라인 구축
-- 다양한 정보원 기반 모델 결과를 결합하는 **앙상블 전략**으로 최종 성능 향상
+## 어떻게 예측하나요?
 
----
+1. **구조 확보:** AlphaFold DB에서 해당 단백질의 기존 3D 구조를 내려받습니다.
+2. **비슷한 구조 찾기:** Foldseek로 모양이 비슷한 단백질을 검색합니다.
+3. **기능 정보 가져오기:** 검색된 단백질의 알려진 GO 기능을 유사도에 따라 점수로 변환합니다.
+4. **계층 관계 반영:** 세부 기능의 점수가 상위 기능에도 반영되도록 GO 그래프를 따라 전파합니다.
+5. **결과 결합:** 다른 모델의 예측과 결합하고, 제출용 파일을 생성·검사합니다.
 
-## ✅ 우리가 한 일 (핵심 요약)
+예를 들어 ‘세부 작업을 할 수 있다’는 예측은 그 작업을 포함하는 ‘상위 작업을 할 수 있다’는 예측과도 일관되어야 합니다. GO 상향 전파는 이런 관계를 반영합니다.
 
-### 1) 3D 구조 기반 예측 파이프라인 (AlphaFold + Foldseek)
-- AlphaFold 구조 데이터(`.cif`) 수집/정리
-- Foldseek DB 구성 및 구조 검색 파이프라인 구축
-- 타겟 단백질 → 구조적으로 유사한 단백질 검색 → **GO term 전이**
-- GO term별 **예측 점수(score) 생성**
-- (옵션) GO DAG 전파(ancestor propagation) 등 후처리로 점수 보정 가능
+![발표 당시 팀 전체 예측 파이프라인](assets/images/team-pipeline.png)
 
-### 2) 멀티모달 앙상블로 최종 모델 구축
-- 3D 구조 기반 점수 + 팀원 모델(서열/텍스트/네트워크 등) 점수를 결합
-- **가중치/랭킹 기반 앙상블**로 최종 GO 예측 생성
-- 내부 검증/평가 지표 기반으로 최적 조합 탐색
+위 그림은 **팀 전체 구성**입니다. 현재 저장소에는 구조 기반 파이프라인·앙상블과 서열 기반 실험 코드가 포함되어 있습니다. TA-ESM2, InterPro, DIAMOND의 모든 원본 구현과 학습 데이터·가중치는 포함되어 있지 않습니다.
 
----
+## 먼저 작은 예제로 실행해 보세요
 
-## 🧠 전체 파이프라인
+**Python 3.10 이상**이 필요합니다. 저장소 루트에서 실행합니다.
 
-```text
-Protein (Sequence / ID)
-   ↓
-AlphaFold 3D Structure (CIF)
-   ↓
-Foldseek Structural Search
-   ↓
-Nearest Neighbors (structural homologs)
-   ↓
-GO Term Transfer + Scoring
-   ↓
-3D-based GO Scores
-   ↓
-Ensemble (3D + other models)
-   ↓
-Final GO Prediction
+~~~bash
+python -m pip install -r requirements.txt
+python scripts/cafa.py demo
+python scripts/cafa.py validate --input artifacts/demo/submission.tsv
+~~~
+
+데모는 가상 Foldseek 검색 결과와 작은 GO 그래프를 사용합니다. **GPU·Azure 계정·인터넷 호출 없이**, 기능 전이부터 상향 전파·앙상블·제출 파일 검사까지 실행합니다. 의존성 설치 시에는 인터넷이 필요할 수 있습니다.
+
+| 생성 파일 | 확인할 내용 |
+| --- | --- |
+| artifacts/demo/raw-go-scores.tsv | 구조 유사도로 생성한 원시 기능 점수 |
+| artifacts/demo/normalized/ | 정규화한 BP·MF·CC 점수 |
+| artifacts/demo/propagated/ | 상위 기능까지 전파한 점수 |
+| artifacts/demo/structure-submission.tsv | 구조 기반 제출 형식 |
+| artifacts/demo/submission.tsv | 앙상블한 최종 예제 |
+| artifacts/demo/summary.json | 예측 행 수·단백질 수·점수 범위 |
+
+이 예제는 처리 흐름을 확인하기 위한 것으로, 실제 단백질 기능이나 대회 성능을 평가하지 않습니다.
+
+## 코드는 어디부터 보면 되나요?
+
+| 궁금한 내용 | 볼 파일 |
+| --- | --- |
+| 비슷한 구조에서 기능을 어떻게 가져오는지 | [structure.py](src/cafa_pipeline/structure.py)의 transfer_go |
+| GO 계층을 어떻게 반영하는지 | [structure.py](src/cafa_pipeline/structure.py)의 propagate |
+| 다른 모델의 예측을 어떻게 결합하는지 | [ensemble.py](src/cafa_pipeline/ensemble.py) |
+| 다운로드·구조 검색 방식 | [download.py](src/cafa_pipeline/download.py) · [search.py](src/cafa_pipeline/search.py) |
+| 전체 명령과 데모의 실행 순서 | [cli.py](src/cafa_pipeline/cli.py) |
+| ESM 임베딩·CNN·Attention MIL 실험 | [서열 실험 안내](models/sequence_baselines/README.md) |
+
+## 주요 엔지니어링 작업
+
+- **대규모 구조 검색:** 발표자료 기준 14만 개 이상의 데이터를 32코어 CPU 환경에서 처리했습니다. 현재 검색 명령은 배치 크기·스레드 수를 명시적으로 설정합니다.
+- **재개 가능한 수집:** 받은 구조 파일을 검사해 재사용하고, 구조 없음과 통신 실패를 구분해 기록합니다.
+- **GO 상향 전파:** 자식 기능의 점수를 부모 기능에 max 방식으로 반영합니다.
+- **선별·앙상블:** 상대 점수 필터와 고득점 패치, 전역 순위 평균을 사용합니다.
+- **실행 경로 정리:** 실습 노트북의 중간 처리 단계를 CLI로 통합하고, 동일한 TSV 스키마와 작은 예제 테스트를 추가했습니다.
+
+발표 당시의 수치·선택 이유와 현재 구현의 차이는 [실험 기록](docs/experiments.md)에 정리했습니다.
+
+## 저장소 지도
+
+~~~text
+src/cafa_pipeline/          구조 기반 처리·앙상블·공통 TSV 형식
+scripts/cafa.py             저장소에서 바로 실행하는 명령 진입점
+azureml/                   Azure ML 작업 제출
+models/sequence_baselines/ 서열 모델 실험 코드
+notebooks/                 데이터 탐색·과거 실험 기록
+examples/                  작은 가상 입력과 형식 예제
+configs/                   Azure 설정 템플릿
+environments/              구조 처리·서열 실험 환경
+docs/                      실행 순서·용어·실험·정리 이력
+tests/                     처리 로직과 전체 예제 테스트
+assets/images/             발표에서 선별한 구성·설명 이미지
+data/README.md             실제 데이터 준비 안내
+~~~
+
+## 실제 데이터와 클라우드 실행
+
+- [설치와 전체 실행 명령](docs/setup.md)
+- [데이터·파일 형식·GO 용어](docs/data-and-glossary.md)
+- [구조 기반 방법과 점수의 의미](docs/structure-method.md)
+- [Azure ML 제출](azureml/README.md)
+- [기존 파일이 어디로 갔는지](docs/reorganization.md)
+
+원본 데이터·GO 매핑·모델 가중치는 별도로 준비해야 합니다. Foldseek 검색은 설치된 실행 파일과 Linux/WSL 또는 Azure Linux 환경을 사용합니다. 전체 대회 학습·제출 결과는 이 예제 실행만으로 재현되지 않습니다.
+
+## 팀과 검증
+
+팀원: 홍지승 · 고아름 · 정성령 · 조수아 · 이주현
+
+개인 작업의 구체적인 구현은 구조 다운로드·검색·GO 전이·후처리·앙상블 코드를 통해 확인할 수 있습니다. 팀 전체 모델의 성과와 현재 공개 코드의 범위를 구분해 기록했습니다.
+
+~~~bash
+python -m unittest discover -s tests -v
+~~~
+
+자동 테스트와 가상 예제는 클라우드 작업을 제출하거나 실제 학습을 시작하지 않습니다. GitHub Actions에서도 같은 핵심 흐름을 검사합니다.

@@ -1,0 +1,4 @@
+# Core pipeline. Optional environments are documented in docs/setup.md.
+numpy>=1.23
+pandas>=1.5
+scipy>=1.9

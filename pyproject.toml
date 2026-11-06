@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cafa-structure-pipeline"
+version = "0.1.0"
+description = "Structure-based GO transfer and ensemble pipeline for a CAFA-6 team project"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.23", "pandas>=1.5", "scipy>=1.9"]
+
+[project.optional-dependencies]
+azure = ["azure-ai-ml>=1.12", "azure-identity>=1.15"]
+sequence = ["torch>=2.0", "transformers>=4.30", "h5py>=3.8", "biopython>=1.80", "scikit-learn>=1.2", "tqdm>=4.62", "mlflow>=2.0", "azureml-mlflow>=1.50"]
+
+[project.scripts]
+cafa-pipeline = "cafa_pipeline.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

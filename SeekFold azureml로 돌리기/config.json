@@ -1,5 +1,0 @@
-{
-    "subscription_id": "REDACTED_AZURE_SUBSCRIPTION_ID",
-    "resource_group": "REDACTED_AZURE_RESOURCE_GROUP",
-    "workspace_name": "REDACTED_AZURE_RESOURCE_GROUP-ml"
-}
