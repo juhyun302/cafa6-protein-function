@@ -4,6 +4,10 @@
 
 Microsoft AI School 2차 팀 프로젝트 · **AZ의 마법사**
 
+**담당 — 이주현:** AlphaFold 구조 수집 → Foldseek 검색 → GO 전이·상향 전파 → 앙상블 · [src/cafa_pipeline 전체](src/cafa_pipeline/)
+
+**팀원 코드:** [서열 모델 실험](models/sequence_baselines/)은 **홍지승 작성·보존용**이며, 이주현의 담당 구현과 구분합니다.
+
 Kaggle에서 개최된 **CAFA 6 Protein Function Prediction** 대회에 참여하며 진행한 프로젝트입니다. 단백질의 기능을 예측하는 실제 대회 과제를 바탕으로 구조 기반 예측과 앙상블을 구현했습니다.
 
 [Kaggle 공식 대회](https://www.kaggle.com/competitions/cafa-6-protein-function-prediction/overview) · [공식 데이터 설명](https://www.kaggle.com/competitions/cafa-6-protein-function-prediction/data) · [대회 리더보드](https://www.kaggle.com/competitions/cafa-6-protein-function-prediction/leaderboard)
@@ -85,7 +89,7 @@ python scripts/cafa.py validate --input artifacts/demo/submission.tsv
 | 다른 모델의 예측을 어떻게 결합하는지 | [ensemble.py](src/cafa_pipeline/ensemble.py) |
 | 다운로드·구조 검색 방식 | [download.py](src/cafa_pipeline/download.py) · [search.py](src/cafa_pipeline/search.py) |
 | 전체 명령과 데모의 실행 순서 | [cli.py](src/cafa_pipeline/cli.py) |
-| ESM 임베딩·CNN·Attention MIL 실험 | [서열 실험 안내](models/sequence_baselines/README.md) |
+| 홍지승 작성·보존용 ESM 임베딩·CNN·Attention MIL 실험 | [서열 실험 안내](models/sequence_baselines/README.md) |
 
 ## 주요 엔지니어링 작업
 
@@ -103,7 +107,7 @@ python scripts/cafa.py validate --input artifacts/demo/submission.tsv
 src/cafa_pipeline/          구조 기반 처리·앙상블·공통 TSV 형식
 scripts/cafa.py             저장소에서 바로 실행하는 명령 진입점
 azureml/                   Azure ML 작업 제출
-models/sequence_baselines/ 서열 모델 실험 코드
+models/sequence_baselines/ 홍지승 작성 서열 모델 실험·보존용
 notebooks/                 데이터 탐색·과거 실험 기록
 examples/                  작은 가상 입력과 형식 예제
 configs/                   Azure 설정 템플릿
@@ -124,11 +128,13 @@ data/README.md             실제 데이터 준비 안내
 
 원본 데이터·GO 매핑·모델 가중치는 별도로 준비해야 합니다. Foldseek 검색은 설치된 실행 파일과 Linux/WSL 또는 Azure Linux 환경을 사용합니다. 전체 대회 학습·제출 결과는 이 예제 실행만으로 재현되지 않습니다.
 
+**당시 사용한 Azure 계정과 리소스는 폐기되어 복구할 수 없습니다.** Azure 제출 코드는 참고용으로 보존하며, 클라우드 실행에는 본인의 새 계정·워크스페이스·컴퓨팅 환경이 필요합니다. 위의 로컬 예제는 기존 Azure 리소스 없이 실행할 수 있습니다.
+
 ## 팀과 검증
 
 팀원: 홍지승 · 고아름 · 정성령 · 조수아 · 이주현
 
-개인 작업의 구체적인 구현은 구조 다운로드·검색·GO 전이·후처리·앙상블 코드를 통해 확인할 수 있습니다. 팀 전체 모델의 성과와 현재 공개 코드의 범위를 구분해 기록했습니다.
+이주현은 구조 기반 파이프라인과 앙상블을 담당했습니다. 홍지승이 작성한 서열 모델 실험은 팀 작업의 맥락을 보여주는 참고 코드로 보존했습니다. Kaggle 순위와 은메달은 팀 공동 성과입니다.
 
 ~~~bash
 python -m unittest discover -s tests -v

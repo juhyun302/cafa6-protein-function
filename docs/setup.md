@@ -4,6 +4,8 @@
 
 기본 CLI는 구조 기반 기능 전이와 앙상블을 다룹니다. Python 3.10 이상과 NumPy·pandas·SciPy가 필요합니다.
 
+당시 Azure 계정과 리소스는 폐기되어 복구할 수 없습니다. 이 문서의 로컬 예제에는 Azure가 필요하지 않습니다. 클라우드 실행을 원하면 [새 Azure 환경 준비 안내](../azureml/README.md)를 참고하세요.
+
 ~~~bash
 python -m venv .venv
 ~~~
