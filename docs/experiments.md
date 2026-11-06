@@ -2,6 +2,18 @@
 
 출처는 Microsoft AI School 2차 프로젝트 ‘AZ의 마법사’의 60쪽 발표자료와 정리 전 저장소입니다. 과거 지표를 새로 재현한 결과는 아닙니다.
 
+## Kaggle에서 확인한 최종 성과
+
+2026-11-06에 공식 Kaggle 페이지에서 확인했습니다.
+
+- 최종 Private 리더보드: Hong jiseung 팀 92위, 점수 0.38737, 은메달
+- 이주현 참가 계정: juhyun (@taillessshark). 같은 팀원 목록과 개인 프로필의 대회 참가 기록에서 확인
+- 개인 프로필의 참가 기록 표시는 92/2259입니다. 이는 프로필에 표시된 순위·참가 규모이며, 특정 시점의 리더보드 필터 행 수와 구분합니다.
+
+[공식 팀 리더보드](https://www.kaggle.com/competitions/cafa-6-protein-function-prediction/leaderboard?search=Hong) · [이주현 대회 참가 기록](https://www.kaggle.com/taillessshark/competitions) · [대표 제출자 프로필](https://www.kaggle.com/hongjiseung)
+
+이 결과는 팀의 실제 대회 성과입니다. 정리된 가상 예제를 실행해 재측정한 점수나 개인 단독 제출 성과로 설명하지 않습니다.
+
 ## 팀 전체 접근
 
 발표 18쪽의 팀 파이프라인은 Foldseek, TA-ESM2, InterPro, DIAMOND의 결과를 결합합니다.

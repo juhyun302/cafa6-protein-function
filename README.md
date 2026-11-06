@@ -8,6 +8,20 @@ Kaggle에서 개최된 **CAFA 6 Protein Function Prediction** 대회에 참여�
 
 [Kaggle 공식 대회](https://www.kaggle.com/competitions/cafa-6-protein-function-prediction/overview) · [공식 데이터 설명](https://www.kaggle.com/competitions/cafa-6-protein-function-prediction/data) · [대회 리더보드](https://www.kaggle.com/competitions/cafa-6-protein-function-prediction/leaderboard)
 
+## 대회 참가와 성과
+
+**CAFA-6 최종 Private 리더보드 92위 · 은메달(Silver Medal)**
+
+| 항목 | 기록 |
+| --- | --- |
+| 최종 순위 | 92위 · [공식 리더보드의 Hong jiseung 팀](https://www.kaggle.com/competitions/cafa-6-protein-function-prediction/leaderboard?search=Hong) |
+| Private Score | 0.38737 |
+| Kaggle 팀 표시명 · 대표 제출자 | [Hong jiseung](https://www.kaggle.com/hongjiseung) |
+| 이주현 Kaggle 계정 | [juhyun · @taillessshark](https://www.kaggle.com/taillessshark) |
+| 개인 계정의 팀 참가 기록 | [CAFA-6 참가 성과 확인](https://www.kaggle.com/taillessshark/competitions) |
+
+팀 단위로 제출한 결과이며, 이주현의 계정도 해당 팀의 참가자로 등록되어 있습니다. 위 점수는 대회 평가 점수입니다. 확인 기준: 2026-11-06.
+
 ## 어떤 문제를 해결하나요?
 
 단백질 서열은 아미노산이 나열된 긴 문자열입니다. 서열만 보고 단백질이 하는 일을 알아내기는 어렵습니다. 이 프로젝트는 **이미 기능이 알려진 단백질과의 유사성**과 **서열 모델의 예측**을 함께 활용합니다.
